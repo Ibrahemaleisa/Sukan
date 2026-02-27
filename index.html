@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="منصة سُكان - أول منصة سعودية للسكن التشاركي الموثق عبر نفاذ">
+    <title>منصة سُكان | أعد تعريف تجربتك السكنية</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['IBM Plex Sans Arabic', 'sans-serif'] },
+                    colors: {
+                        sukan: {
+                            brand: '#0066FF',
+                            secondary: '#0052CC',
+                            dark: '#020617',
+                            slate: '#64748b',
+                            bg: '#F8FAFC',
+                            surface: '#FFFFFF',
+                            accent: '#38bdf8'
+                        }
+                    },
+                    spacing: {
+                        '128': '32rem',
+                        '144': '36rem',
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                        '5xl': '3rem',
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'slow-spin': 'spin 12s linear infinite',
+                        'float-slow': 'float 5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #0066FF; border-radius: 5px; }
+        
+        /* Glassmorphism */
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        
+        /* Grid Background */
+        .grid-bg { background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px); background-size: 40px 40px; }
+        
+        /* Custom Inputs */
+        input:focus, select:focus { transform: scale(1.01); transition: all 0.3s ease; }
+        
+        .hero-title {
+            background: linear-gradient(to right, #0066FF, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Prevent form shrinking on mobile */
+        @media (max-width: 768px) {
+            .mobile-fix { padding: 1.5rem !important; }
+        }
+    </style>
+</head>
+
+<body class="bg-sukan-bg text-sukan-dark font-sans leading-relaxed selection:bg-sukan-brand selection:text-white">
+
+    <div class="bg-sukan-dark text-white py-2 text-center text-sm font-medium">
+        ✨ انضم لأكثر من <span class="text-sukan-accent">2,500</span> شخص سجلوا اهتمامهم في الرياض وجدة
+    </div>
+
+    <nav class="sticky top-0 z-[999] glass w-full border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
+            <div class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-12 h-12 bg-sukan-brand rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-xl shadow-sukan-brand/30 group-hover:rotate-12 transition-transform">
+                    س
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="text-2xl font-black tracking-tight">سُكان</span>
+                    <span class="text-[10px] text-sukan-brand font-bold tracking-widest uppercase">SUKAN PLATFORM</span>
+                </div>
+            </div>
+            
+            <div class="hidden lg:flex items-center gap-10 font-bold text-slate-600">
+                <a href="#how-it-works" class="hover:text-sukan-brand transition-colors">كيف نعمل؟</a>
+                <a href="#features" class="hover:text-sukan-brand transition-colors">المميزات</a>
+                <a href="#faq" class="hover:text-sukan-brand transition-colors">الأسئلة الشائعة</a>
+                <a href="#register" class="bg-sukan-brand text-white px-8 py-3.5 rounded-2xl hover:bg-sukan-secondary hover:shadow-2xl transition duration-300 transform hover:-translate-y-1">
+                    ابدأ الآن مجاناً
+                </a>
+            </div>
+
+            <button class="lg:hidden p-2">
+                <svg class="w-8 h-8 text-sukan-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="relative grid-bg overflow-hidden pt-12 pb-24 lg:pt-24 lg:pb-32">
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+            <div data-aos="fade-left" data-aos-duration="1000">
+                <div class="inline-flex items-center gap-2 bg-blue-100/50 text-sukan-brand px-6 py-2 rounded-full text-sm font-bold mb-10 border border-blue-200">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sukan-brand opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-sukan-brand"></span>
+                    </span>
+                    أول منصة لتنسيق السكن المشترك في المملكة
+                </div>
+                <h1 class="text-6xl lg:text-8xl font-black leading-tight mb-8">
+                    أسلوب <br><span class="hero-title tracking-tighter">سكن ذكي</span> <br> للمستقبل
+                </h1>
+                <p class="text-2xl text-slate-500 mb-12 leading-relaxed max-w-xl">
+                    منصة <span class="font-bold text-sukan-dark">سُكان</span> تمنحك القدرة على السكن في أرقى أحياء الرياض وجدة بتكلفة أقل بنسبة <span class="text-sukan-brand font-black italic">50%</span>.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <a href="#register" class="px-12 py-6 bg-sukan-dark text-white rounded-3xl font-black text-xl hover:bg-gray-800 transition shadow-2xl flex items-center justify-center gap-3 group">
+                        سجل اهتمامك 
+                        <svg class="w-6 h-6 group-hover:translate-x-[-5px] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </a>
+                    <div class="flex items-center gap-5 p-2">
+                        <div class="flex -space-x-4">
+                            <img class="h-14 w-14 rounded-full border-4 border-white" src="https://i.pravatar.cc/150?u=a" alt="User">
+                            <img class="h-14 w-14 rounded-full border-4 border-white" src="https://i.pravatar.cc/150?u=b" alt="User">
+                            <img class="h-14 w-14 rounded-full border-4 border-white" src="https://i.pravatar.cc/150?u=c" alt="User">
+                        </div>
+                        <div class="leading-tight">
+                            <p class="font-black text-sukan-dark">انضم لـ 2.5k+</p>
+                            <p class="text-sm text-slate-500 font-medium">ممن ينتظرون الإطلاق</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative" data-aos="zoom-in" data-aos-duration="1200">
+                <div class="absolute -inset-10 bg-gradient-to-r from-sukan-brand/20 to-sukan-accent/20 rounded-full blur-[100px] animate-pulse"></div>
+                <div class="relative z-10 animate-float-slow">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200" alt="Sukan Real Estate" class="rounded-[4rem] shadow-2xl border-[12px] border-white object-cover h-[600px] w-full shadow-blue-200/50">
+                    
+                    <div class="absolute top-10 -right-8 glass p-6 rounded-3xl shadow-2xl border border-white/50 animate-bounce transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center text-white text-xl">🛡️</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-400">حسابات موثقة عبر</p>
+                                <p class="text-lg font-black text-sukan-dark leading-none">بوابة نفاذ</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-20 -left-8 glass p-6 rounded-3xl shadow-2xl border border-white/50 animate-float-slow">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-sukan-brand rounded-2xl flex items-center justify-center text-white text-xl text-right">💰</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-400 text-right">وفرت حتى الآن</p>
+                                <p class="text-lg font-black text-sukan-dark leading-none text-right">50% من التكلفة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-12">
+            <div class="text-center" data-aos="fade-up">
+                <p class="text-5xl font-black text-sukan-brand mb-2">0</p>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">تكلفة التسجيل</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                <p class="text-5xl font-black text-sukan-brand mb-2">100%</p>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">أمان مع نفاذ</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                <p class="text-5xl font-black text-sukan-brand mb-2">50%</p>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">توفير سنوي</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                <p class="text-5xl font-black text-sukan-brand mb-2">24/7</p>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">دعم فني وتواصل</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-32 bg-slate-50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-24">
+                <h2 class="text-5xl font-black mb-6">ماذا تقدم لك <span class="text-sukan-brand">سُكان</span>؟</h2>
+                <div class="h-2 w-24 bg-sukan-brand mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="group bg-white p-12 rounded-[3.5rem] shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 hover:-translate-y-4" data-aos="fade-up">
+                    <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center text-4xl mb-10 group-hover:bg-sukan-brand group-hover:text-white transition-colors duration-500">
+                        🔒
+                    </div>
+                    <h3 class="text-2xl font-black mb-6">تواصل آمن ومحمي</h3>
+                    <p class="text-slate-500 text-lg leading-relaxed">
+                        تواصل عن طريق التطبيق بشكل مباشر وآمن. نحن نضمن أن بياناتك الشخصية لا تظهر إلا للأشخاص الموثقين الذين تختارهم بنفسك.
+                    </p>
+                </div>
+
+                <div class="group bg-sukan-dark p-12 rounded-[3.5rem] shadow-2xl transition-all duration-500 hover:-translate-y-4 relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="absolute -right-10 -bottom-10 text-9xl text-white/5 opacity-10">💰</div>
+                    <div class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center text-4xl mb-10 text-white">
+                        💰
+                    </div>
+                    <h3 class="text-2xl font-black mb-6 text-white">وفر حتى 50%</h3>
+                    <p class="text-slate-300 text-lg leading-relaxed">
+                        لماذا تدفع ميزانيتك بالكامل على السكن؟ منصة سُكان تتيح لك مشاركة الإيجار مع شركاء مثاليين مما يقلل المصاريف للنصف.
+                    </p>
+                </div>
+
+                <div class="group bg-white p-12 rounded-[3.5rem] shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 hover:-translate-y-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center text-4xl mb-10 group-hover:bg-sukan-brand group-hover:text-white transition-colors duration-500">
+                        🏠
+                    </div>
+                    <h3 class="text-2xl font-black mb-6">اسكن في أي مكان</h3>
+                    <p class="text-slate-500 text-lg leading-relaxed">
+                        لا تضحي بالموقع لأجل السعر. اسكن في أرقى الأحياء، قريباً من عملك، وفي بيئة تناسب طموحاتك وبسعر يتناسب تماماً مع دخلك.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-24 items-center">
+                <div class="space-y-10" data-aos="fade-left">
+                    <h2 class="text-5xl font-black leading-tight">كيف تعمل <span class="text-sukan-brand italic underline decoration-blue-200">سُكان</span>؟</h2>
+                    
+                    <div class="flex gap-8">
+                        <div class="flex-shrink-0 w-16 h-16 bg-sukan-brand text-white rounded-full flex items-center justify-center text-2xl font-black shadow-xl shadow-blue-200">1</div>
+                        <div>
+                            <h4 class="text-2xl font-black mb-2">سجل بياناتك وثق حسابك</h4>
+                            <p class="text-slate-500 text-lg">نبدأ بالتحقق من هويتك عبر بوابة نفاذ الوطنية لضمان أمان المجتمع السكني.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-8">
+                        <div class="flex-shrink-0 w-16 h-16 bg-slate-100 text-slate-800 rounded-full flex items-center justify-center text-2xl font-black">2</div>
+                        <div>
+                            <h4 class="text-2xl font-black mb-2">ابحث عن السكن أو الشريك</h4>
+                            <p class="text-slate-500 text-lg">استخدم خوارزمياتنا الذكية للوصول لأفضل سكن متاح أو أشخاص يشبهونك في الاهتمامات والميزانية.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-8">
+                        <div class="flex-shrink-0 w-16 h-16 bg-slate-100 text-slate-800 rounded-full flex items-center justify-center text-2xl font-black">3</div>
+                        <div>
+                            <h4 class="text-2xl font-black mb-2">تواصل واتفق بضماننا</h4>
+                            <p class="text-slate-500 text-lg">تواصل عبر شات المنصة، وقع العقود التشاركية، وابدأ رحلة سكنك الجديد بكل راحة بال.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-sukan-dark p-16 rounded-[4rem] text-white relative overflow-hidden" data-aos="zoom-in-right">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-sukan-brand/20 blur-[120px]"></div>
+                    <div class="relative z-10">
+                        <p class="text-3xl font-medium leading-relaxed italic mb-12">
+                            "سُكان هي أول منصة تعمل على تنسيق السكن المشترك، وتحسين جودة التواصل والتقليل من التلاعب، جميع العمليات موثقة عبر **نفاذ** لضمان حقوقك."
+                        </p>
+                        <div class="flex items-center gap-6">
+                            <div class="w-20 h-2 bg-sukan-brand rounded-full"></div>
+                            <div>
+                                <p class="text-xl font-black">إدارة المنصة</p>
+                                <p class="text-sukan-accent font-bold">رؤية 2030</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="register" class="py-32 bg-slate-50 grid-bg">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="bg-white rounded-[4rem] shadow-2xl overflow-hidden border border-white flex flex-col md:flex-row" data-aos="flip-down">
+                
+                <div class="md:w-1/3 bg-sukan-dark p-12 md:p-16 text-white flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-3xl font-black mb-6 leading-tight">كن أول <br> من ينطلق!</h3>
+                        <p class="text-slate-400 font-medium">نحن نفتح التسجيل لمناطق محدودة في الرياض وجدة كمرحلة أولى.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3 text-sukan-accent font-bold italic">
+                            <span>✨</span> تجربة خالية من العمولات
+                        </div>
+                        <div class="flex items-center gap-3 text-sukan-accent font-bold italic">
+                            <span>✨</span> وصول حصري للعقارات
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:w-2/3 p-12 md:p-20 mobile-fix">
+                    <div class="mb-12">
+                        <h2 class="text-4xl font-black mb-4">سجل اهتمامك</h2>
+                        <p class="text-slate-400 font-bold tracking-wide">ادخل بياناتك للانضمام لقائمة الانتظار الذهبية</p>
+                    </div>
+
+                    <form id="sukanForm" class="space-y-8">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">الاسم الأول</label>
+                                <input type="text" id="first_name" required placeholder="مثلاً: محمد" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">الاسم الأخير</label>
+                                <input type="text" id="last_name" required placeholder="مثلاً: العتيبي" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg">
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">رقم الجوال</label>
+                                <input type="tel" id="phone" required placeholder="05xxxxxxxx" dir="ltr" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg text-right">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">البريد الإلكتروني</label>
+                                <input type="email" id="email" required placeholder="name@domain.com" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg">
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="text-sm font-black text-slate-700 mr-2">المدينة المفضلة</label>
+                            <select id="city" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C/svg%3E')] bg-[length:1.5em_1.5em] bg-[right_1.5rem_center] bg-no-repeat">
+                                <option value="الرياض">الرياض</option>
+                                <option value="جدة">جدة</option>
+                                <option value="المنطقة الشرقية">المنطقة الشرقية</option>
+                            </select>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">الميزانية (SAR)</label>
+                                <input type="number" id="budget" required placeholder="مثلاً: 3000" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">وقت الانتقال</label>
+                                <input type="date" id="move_date" required class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg text-slate-400">
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="w-full bg-sukan-brand text-white py-6 rounded-[2rem] font-black text-2xl hover:bg-sukan-secondary shadow-2xl shadow-blue-200 transition-all active:scale-95">
+                            تأكيد الانضمام للقائمة
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-32 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-5xl font-black text-center mb-20">أسئلة شائعة</h2>
+            <div class="space-y-6">
+                <details class="group bg-slate-50 p-8 rounded-[2rem] cursor-pointer open:bg-blue-50 transition-all duration-300">
+                    <summary class="text-xl font-black flex justify-between items-center list-none">
+                        هل المنصة تابعة لوزارة الإسكان؟
+                        <span class="text-sukan-brand group-open:rotate-180 transition-transform font-bold">+</span>
+                    </summary>
+                    <p class="mt-6 text-slate-600 leading-relaxed text-lg">نحن منصة خاصة نعمل بالتكامل مع بوابة نفاذ الوطنية لضمان أمان المستخدمين، ونهدف لتسهيل الوصول لحلول سكنية مرنة تتوافق مع التوجهات الوطنية لرؤية المملكة 2030.</p>
+                </details>
+                
+                <details class="group bg-slate-50 p-8 rounded-[2rem] cursor-pointer open:bg-blue-50 transition-all duration-300">
+                    <summary class="text-xl font-black flex justify-between items-center list-none">
+                        كيف تضمنون جودة شركاء السكن؟
+                        <span class="text-sukan-brand group-open:rotate-180 transition-transform font-bold">+</span>
+                    </summary>
+                    <p class="mt-6 text-slate-600 leading-relaxed text-lg">كل مستخدم في سُكان ملزم بالتوثيق عبر نفاذ، بالإضافة إلى نظام تقييم متبادل وتوصيف دقيق للاهتمامات ونمط الحياة لضمان التوافق التام قبل السكن.</p>
+                </details>
+
+                <details class="group bg-slate-50 p-8 rounded-[2rem] cursor-pointer open:bg-blue-50 transition-all duration-300">
+                    <summary class="text-xl font-black flex justify-between items-center list-none">
+                        هل يمكنني إلغاء اشتراكي لاحقاً؟
+                        <span class="text-sukan-brand group-open:rotate-180 transition-transform font-bold">+</span>
+                    </summary>
+                    <p class="mt-6 text-slate-600 leading-relaxed text-lg">بكل تأكيد، منصة سُكان توفر مرونة كاملة في إدارة حسابك واختياراتك السكنية دون أي التزامات مخفية.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-sukan-dark text-white pt-32 pb-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-4 gap-20 mb-24">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-10 font-black text-4xl">
+                        <div class="w-14 h-14 bg-sukan-brand rounded-2xl flex items-center justify-center text-white">س</div>
+                        سُكان
+                    </div>
+                    <p class="text-slate-400 text-xl leading-relaxed max-w-md">
+                        نحن نعيد تعريف السكن في المملكة. تكنولوجيا تخدم الإنسان، وتوفر له حياة كريمة بتكلفة ذكية.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="font-black text-xl mb-8 border-r-4 border-sukan-brand pr-4">روابط سريعة</h5>
+                    <ul class="space-y-4 text-slate-400 font-medium text-lg">
+                        <li><a href="#how-it-works" class="hover:text-white transition">كيف نعمل؟</a></li>
+                        <li><a href="#features" class="hover:text-white transition">المميزات</a></li>
+                        <li><a href="#register" class="hover:text-white transition">سجل اهتمامك</a></li>
+                        <li><a href="#faq" class="hover:text-white transition">الأسئلة الشائعة</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-black text-xl mb-8 border-r-4 border-sukan-brand pr-4">تواصل معنا</h5>
+                    <p class="text-slate-400 font-medium text-lg mb-4">الرياض، المملكة العربية السعودية</p>
+                    <p class="text-sukan-brand font-black text-xl italic">info@sukan.sa</p>
+                </div>
+            </div>
+            
+            <div class="pt-16 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-8">
+                <p class="text-slate-500 font-bold">© 2026 منصة سُكان. صُنع بكل حب في المملكة 🇸🇦</p>
+                <div class="flex gap-8 text-slate-500 font-bold">
+                    <a href="#" class="hover:text-white">سياسة الخصوصية</a>
+                    <a href="#" class="hover:text-white">شروط الاستخدام</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialization
+        AOS.init({ once: true, mirror: false });
+
+        // Supabase Logic
+        const SUPABASE_URL = 'https://xkvqrwdxxqkpaqodcbnv.supabase.co'; 
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrdnFyd2R4eHFrcGFxb2RjYm52Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMDgwNDcsImV4cCI6MjA4Nzc4NDA0N30.9tTSDIP8adXVoE_WBOTx4hCmvNP9mvnS6hfmR0xbvog'; 
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const form = document.getElementById('sukanForm');
+        const btn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btn.innerText = "جاري الحفظ في القاعدة...";
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const payload = {
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                city: document.getElementById('city').value,
+                budget: parseInt(document.getElementById('budget').value),
+                move_date: document.getElementById('move_date').value,
+                created_at: new Date()
+            };
+
+            try {
+                const { error } = await supabaseClient.from('leads').insert([payload]);
+                
+                if (error) throw error;
+
+                alert("رائع! تم تسجيل اهتمامك بنجاح في منصة سُكان. سنتواصل معك فور الإطلاق.");
+                form.reset();
+                btn.innerText = "تم التسجيل بنجاح ✅";
+                btn.classList.remove('bg-sukan-brand');
+                btn.classList.add('bg-green-600');
+            } catch (err) {
+                alert("حدث خطأ تقني: " + err.message);
+                btn.innerText = "حاول مرة أخرى";
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        });
+    </script>
+</body>
+</html>
