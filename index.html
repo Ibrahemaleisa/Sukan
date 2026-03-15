@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+
+# I'll generate the updated HTML code with the requested changes
+# and save it to a file for the user
+
+updated_html = '''<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -81,13 +85,55 @@
         @media (max-width: 768px) {
             .mobile-fix { padding: 1.5rem !important; }
         }
+
+        /* Custom Radio Button Styling */
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .radio-option {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+        
+        .radio-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            color: #64748b;
+        }
+        
+        .radio-option input[type="radio"]:checked + label {
+            background-color: #0066FF;
+            border-color: #0066FF;
+            color: white;
+            transform: scale(1.02);
+        }
+        
+        .radio-option label:hover {
+            border-color: #0066FF;
+        }
     </style>
 </head>
 
 <body class="bg-sukan-bg text-sukan-dark font-sans leading-relaxed selection:bg-sukan-brand selection:text-white">
 
     <div class="bg-sukan-dark text-white py-2 text-center text-sm font-medium">
-        ✨ انضم لأكثر من <span class="text-sukan-accent">2,500</span> شخص سجلوا اهتمامهم في الرياض وجدة
+        ✨ انضم لأكثر من <span class="text-sukan-accent">2,500</span> شخص سجلوا اهتمامهم في الرياض وجدة والمدن الرئيسية
     </div>
 
     <nav class="sticky top-0 z-[999] glass w-full border-b border-slate-100">
@@ -135,7 +181,7 @@
                     أسلوب <br><span class="hero-title tracking-tighter">سكن ذكي</span> <br> للمستقبل
                 </h1>
                 <p class="text-2xl text-slate-500 mb-12 leading-relaxed max-w-xl">
-                    منصة <span class="font-bold text-sukan-dark">سُكان</span> تمنحك القدرة على السكن في أرقى أحياء الرياض وجدة بتكلفة أقل بنسبة <span class="text-sukan-brand font-black italic">50%</span>.
+                    منصة <span class="font-bold text-sukan-dark">سُكان</span> تمنحك القدرة على السكن في أرقى أحياء المملكة بتكلفة أقل بنسبة <span class="text-sukan-brand font-black italic">50%</span>.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-6">
                     <a href="#register" class="px-12 py-6 bg-sukan-dark text-white rounded-3xl font-black text-xl hover:bg-gray-800 transition shadow-2xl flex items-center justify-center gap-3 group">
@@ -305,7 +351,7 @@
                 <div class="md:w-1/3 bg-sukan-dark p-12 md:p-16 text-white flex flex-col justify-between">
                     <div>
                         <h3 class="text-3xl font-black mb-6 leading-tight">كن أول <br> من ينطلق!</h3>
-                        <p class="text-slate-400 font-medium">نحن نفتح التسجيل لمناطق محدودة في الرياض وجدة كمرحلة أولى.</p>
+                        <p class="text-slate-400 font-medium">نحن نفتح التسجيل لمناطق محدودة في مختلف مدن المملكة كمرحلة أولى.</p>
                     </div>
                     <div class="space-y-6">
                         <div class="flex items-center gap-3 text-sukan-accent font-bold italic">
@@ -313,6 +359,9 @@
                         </div>
                         <div class="flex items-center gap-3 text-sukan-accent font-bold italic">
                             <span>✨</span> وصول حصري للعقارات
+                        </div>
+                        <div class="flex items-center gap-3 text-sukan-accent font-bold italic">
+                            <span>✨</span> دعم للموظفين والطلاب
                         </div>
                     </div>
                 </div>
@@ -352,7 +401,33 @@
                                 <option value="الرياض">الرياض</option>
                                 <option value="جدة">جدة</option>
                                 <option value="المنطقة الشرقية">المنطقة الشرقية</option>
+                                <option value="مكة المكرمة">مكة المكرمة</option>
+                                <option value="المدينة المنورة">المدينة المنورة</option>
+                                <option value="تبوك">تبوك</option>
+                                <option value="حائل">حائل</option>
+                                <option value="أبها">أبها</option>
                             </select>
+                        </div>
+
+                        <!-- New Employment Status Field -->
+                        <div class="space-y-4">
+                            <label class="text-sm font-black text-slate-700 mr-2">حالة العمل</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="employee" name="employment_status" value="موظف" required>
+                                    <label for="employee">
+                                        <span>💼</span>
+                                        موظف
+                                    </label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="student" name="employment_status" value="طالب" required>
+                                    <label for="student">
+                                        <span>🎓</span>
+                                        طالب
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-8">
@@ -452,7 +527,7 @@
 
         // Supabase Logic
         const SUPABASE_URL = 'https://xkvqrwdxxqkpaqodcbnv.supabase.co'; 
-        const SUPABASE_KEY = 'ضـع_مـفـتـاح_ANON_PUBLIC_هـنـا'; 
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrdnFyd2R4eHFrcGFxb2RjYm52Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMDgwNDcsImV4cCI6MjA4Nzc4NDA0N30.9tTSDIP8adXVoE_WBOTx4hCmvNP9mvnS6hfmR0xbvog'; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         const form = document.getElementById('sukanForm');
@@ -464,12 +539,16 @@
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
 
+            // Get selected employment status
+            const employmentStatus = document.querySelector('input[name="employment_status"]:checked');
+
             const payload = {
                 first_name: document.getElementById('first_name').value,
                 last_name: document.getElementById('last_name').value,
                 phone: document.getElementById('phone').value,
                 email: document.getElementById('email').value,
                 city: document.getElementById('city').value,
+                employment_status: employmentStatus ? employmentStatus.value : null,
                 budget: parseInt(document.getElementById('budget').value),
                 move_date: document.getElementById('move_date').value,
                 created_at: new Date()
@@ -494,4 +573,17 @@
         });
     </script>
 </body>
-</html>
+</html>'''
+
+# Save to file
+with open('/mnt/kimi/output/sukan_updated.html', 'w', encoding='utf-8') as f:
+    f.write(updated_html)
+
+print("✅ تم حفظ الملف المُحدَّث بنجاح!")
+print("📁 المسار: /mnt/kimi/output/sukan_updated.html")
+print("\n📋 ملخص التغييرات:")
+print("1. ✅ إضافة 5 مدن جديدة: مكة المكرمة، المدينة المنورة، تبوك، حائل، أبها")
+print("2. ✅ إضافة حقل 'حالة العمل' مع خيارين: موظف 💼 / طالب 🎓")
+print("3. ✅ تحديث JavaScript لإرسال حالة العمل لقاعدة البيانات")
+print("4. ✅ تحديث النصوص لتشمل 'المدن الرئيسية' بدلاً من الرياض وجدة فقط")
+print("5. ✅ إضافة CSS مخصص لأزرار الاختيار (Radio Buttons) بتصميم عصري")
