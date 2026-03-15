@@ -1,2554 +1,497 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="سُكان - المنصة العقارية الذكية الأولى في المملكة">
-    <meta name="keywords" content="عقارات, بيوت, شقق, أراضي, تمويل عقاري, ذكاء اصطناعي">
-    <meta name="author" content="Sukan Pro Team">
-    <meta property="og:title" content="سُكان برو - المنصة العقارية الذكية">
-    <meta property="og:description" content="اكتشف عقارك المثالي مع الذكاء الاصطناعي">
-    <meta property="og:image" content="https://sukan.pro/og-image.jpg">
-    <title>سُكان برو | Sukan Pro - المنصة العقارية الذكية</title>
+    <meta name="description" content="منصة سُكان - أول منصة سعودية للسكن التشاركي الموثق عبر نفاذ">
+    <title>منصة سُكان | أعد تعريف تجربتك السكنية</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     
-    <!-- Preload Critical Resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- External Libraries -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
-    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['IBM Plex Sans Arabic', 'sans-serif'] },
+                    colors: {
+                        sukan: {
+                            brand: '#0066FF',
+                            secondary: '#0052CC',
+                            dark: '#020617',
+                            slate: '#64748b',
+                            bg: '#F8FAFC',
+                            surface: '#FFFFFF',
+                            accent: '#38bdf8'
+                        }
+                    },
+                    spacing: {
+                        '128': '32rem',
+                        '144': '36rem',
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                        '5xl': '3rem',
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'slow-spin': 'spin 12s linear infinite',
+                        'float-slow': 'float 5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --accent: #f59e0b;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-tertiary: #334155;
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #64748b;
-            --border: #475569;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-            --radius-sm: 0.375rem;
-            --radius: 0.5rem;
-            --radius-lg: 0.75rem;
-            --radius-xl: 1rem;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        [data-theme="light"] {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f1f5f9;
-            --bg-tertiary: #e2e8f0;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --border: #cbd5e1;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            transition: var(--transition);
-        }
-
         /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Selection */
-        ::selection {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Loading Screen */
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .loader-content {
-            text-align: center;
-        }
-
-        .loader-logo {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: pulse 2s infinite;
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 4px;
-            background: var(--bg-tertiary);
-            border-radius: 2px;
-            margin-top: 2rem;
-            overflow: hidden;
-        }
-
-        .loader-progress {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transition: width 0.3s;
-            animation: loading 2s ease-in-out infinite;
-        }
-
-        @keyframes loading {
-            0% { width: 0%; margin-left: 0%; }
-            50% { width: 100%; margin-left: 0%; }
-            100% { width: 0%; margin-left: 100%; }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            transition: var(--transition);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: var(--text-primary);
-        }
-
-        .nav-logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .nav-logo-text {
-            font-size: 1.75rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            padding: 0.5rem 0;
-            transition: var(--transition);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transition: var(--transition);
-        }
-
-        .nav-link:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-lg);
-            border: none;
-            font-family: inherit;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
-        }
-
-        .btn-secondary {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-secondary);
-            border-color: var(--primary);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-secondary);
-        }
-
-        .btn-ghost:hover {
-            color: var(--text-primary);
-            background: var(--bg-secondary);
-        }
-
-        .theme-toggle {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            font-size: 1.25rem;
-        }
-
-        .theme-toggle:hover {
-            background: var(--primary);
-            transform: rotate(180deg);
-        }
-
-        .lang-switcher {
-            position: relative;
-        }
-
-        .lang-btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            color: var(--text-primary);
-            cursor: pointer;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 0.5rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 0.5rem;
-            min-width: 150px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: var(--transition);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .lang-switcher:hover .lang-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .lang-option {
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .lang-option:hover {
-            background: var(--bg-tertiary);
-        }
-
-        .lang-option.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .mobile-menu-btn span {
-            width: 25px;
-            height: 3px;
-            background: var(--text-primary);
-            border-radius: 3px;
-            transition: var(--transition);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 8rem 2rem 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .hero-bg-grid {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        .hero-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: particleFloat 15s infinite;
-        }
-
-        @keyframes particleFloat {
-            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.5; }
-            90% { opacity: 0.5; }
-            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
-        }
-
-        .hero-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .hero-content {
-            z-index: 1;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 1rem;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--primary);
-            border-radius: 50px;
-            font-size: 0.875rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
-        }
-
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #0066FF; border-radius: 5px; }
+        
+        /* Glassmorphism */
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        
+        /* Grid Background */
+        .grid-bg { background-image: radial-gradient(#e2e8f0 1.5px, transparent 1.5px); background-size: 40px 40px; }
+        
+        /* Custom Inputs */
+        input:focus, select:focus { transform: scale(1.01); transition: all 0.3s ease; }
+        
         .hero-title {
-            font-size: 4rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-title .gradient-text {
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            background: linear-gradient(to right, #0066FF, #38bdf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 200% 200%;
-            animation: gradientShift 5s ease infinite;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .hero-description {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            max-width: 600px;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 3rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .hero-visual {
-            position: relative;
-            height: 600px;
-        }
-
-        .hero-3d-container {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            perspective: 1000px;
-        }
-
-        .floating-cards {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .float-card {
-            position: absolute;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-xl);
-            animation: floatCard 6s ease-in-out infinite;
-        }
-
-        .float-card:nth-child(1) {
-            top: 10%;
-            right: 10%;
-            animation-delay: 0s;
-        }
-
-        .float-card:nth-child(2) {
-            top: 40%;
-            left: 5%;
-            animation-delay: 2s;
-        }
-
-        .float-card:nth-child(3) {
-            bottom: 20%;
-            right: 20%;
-            animation-delay: 4s;
-        }
-
-        @keyframes floatCard {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
-        }
-
-        .float-card-image {
-            width: 200px;
-            height: 120px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--radius);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
-
-        .float-card-title {
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .float-card-price {
-            color: var(--accent);
-            font-weight: 800;
-            font-size: 1.25rem;
-        }
-
-        /* Search Section */
-        .search-section {
-            padding: 2rem;
-            margin-top: -4rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .search-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            padding: 2rem;
-            box-shadow: var(--shadow-xl);
-        }
-
-        .search-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 1rem;
-        }
-
-        .search-tab {
-            padding: 0.75rem 1.5rem;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-family: inherit;
-            font-weight: 600;
-            cursor: pointer;
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .search-tab.active {
-            color: var(--primary);
-        }
-
-        .search-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1rem;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 3px 3px 0 0;
-        }
-
-        .search-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr) auto;
-            gap: 1rem;
-            align-items: end;
-        }
-
-        .search-field {
-            position: relative;
-        }
-
-        .search-label {
-            display: block;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            color: var(--text-primary);
-            font-family: inherit;
-            transition: var(--transition);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            bottom: 1rem;
-            color: var(--text-muted);
-        }
-
-        .search-btn {
-            padding: 1rem 2rem;
-            height: fit-content;
-        }
-
-        /* AI Recommendation Section */
-        .ai-section {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(236, 72, 153, 0.05));
-        }
-
-        .section-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 50px;
-            color: var(--primary);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .section-description {
-            color: var(--text-secondary);
-            font-size: 1.125rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .ai-interface {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            min-height: 600px;
-        }
-
-        .ai-sidebar {
-            background: var(--bg-tertiary);
-            padding: 2rem;
-            border-left: 1px solid var(--border);
-        }
-
-        .ai-avatar {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 50%;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            animation: pulse 2s infinite;
-        }
-
-        .ai-name {
-            text-align: center;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .ai-status {
-            text-align: center;
-            color: var(--success);
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .ai-status::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: blink 2s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .ai-options {
-            margin-top: 2rem;
-        }
-
-        .ai-option {
-            padding: 1rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            margin-bottom: 0.75rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .ai-option:hover {
-            border-color: var(--primary);
-            transform: translateX(-5px);
-        }
-
-        .ai-chat {
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 1.5rem;
-            max-height: 400px;
-        }
-
-        .chat-message {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .chat-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--bg-tertiary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .chat-avatar.ai {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-        }
-
-        .chat-content {
-            background: var(--bg-tertiary);
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-lg);
-            border-bottom-right-radius: 4px;
-            max-width: 80%;
-        }
-
-        .chat-message.user {
-            flex-direction: row-reverse;
-        }
-
-        .chat-message.user .chat-content {
-            background: var(--primary);
-            border-bottom-right-radius: var(--radius-lg);
-            border-bottom-left-radius: 4px;
-        }
-
-        .chat-input-container {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            color: var(--text-primary);
-            font-family: inherit;
-        }
-
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        /* Properties Grid */
-        .properties-section {
-            padding: 6rem 2rem;
-        }
-
-        .filters-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .filters-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            color: var(--text-secondary);
-            font-family: inherit;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .view-toggle {
-            display: flex;
-            gap: 0.5rem;
-            background: var(--bg-secondary);
-            padding: 0.25rem;
-            border-radius: var(--radius);
-        }
-
-        .view-btn {
-            padding: 0.5rem 1rem;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-radius: var(--radius-sm);
-            transition: var(--transition);
-        }
-
-        .view-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .properties-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .property-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .property-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--primary);
-        }
-
-        .property-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            background: var(--accent);
-            color: white;
-            font-size: 0.875rem;
-            font-weight: 700;
-            border-radius: var(--radius);
-            z-index: 2;
-        }
-
-        .property-image {
-            height: 250px;
-            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
-            position: relative;
-            overflow: hidden;
-        }
-
-        .property-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .property-card:hover .property-image img {
-            transform: scale(1.1);
-        }
-
-        .property-actions {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .property-card:hover .property-actions {
-            opacity: 1;
-        }
-
-        .action-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .action-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .property-content {
-            padding: 1.5rem;
-        }
-
-        .property-price {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .property-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-        }
-
-        .property-location {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .property-features {
-            display: flex;
-            gap: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .property-feature {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        /* Map Section */
-        .map-section {
-            padding: 6rem 2rem;
-            background: var(--bg-secondary);
-        }
-
-        .map-container {
-            height: 600px;
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            border: 1px solid var(--border);
-            position: relative;
-        }
-
-        #map {
-            width: 100%;
-            height: 100%;
-        }
-
-        .map-overlay {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--bg-secondary);
-            padding: 1rem;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            z-index: 1000;
-        }
-
-        .map-stats {
-            display: flex;
-            gap: 2rem;
-        }
-
-        /* Analytics Dashboard */
-        .analytics-section {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            padding: 1.5rem;
-            transition: var(--transition);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-        }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .stat-icon.blue { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
-        .stat-icon.pink { background: rgba(236, 72, 153, 0.1); color: var(--secondary); }
-        .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: var(--accent); }
-        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-
-        .stat-change {
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .stat-change.positive {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .stat-change.negative {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--error);
-        }
-
-        .stat-value-large {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label-large {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .chart-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            padding: 1.5rem;
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .chart-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-        }
-
-        .chart-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .chart-btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .chart-btn.active, .chart-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* VR Tour Section */
-        .vr-section {
-            padding: 6rem 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vr-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .vr-content h2 {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-        }
-
-        .vr-features {
-            margin: 2rem 0;
-        }
-
-        .vr-feature {
-            display: flex;
-            align-items: start;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .vr-feature-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-
-        .vr-preview {
-            position: relative;
-            height: 500px;
-            background: var(--bg-secondary);
-            border-radius: var(--radius-xl);
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-
-        .vr-360 {
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, var(--bg-tertiary), var(--bg-secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .vr-hotspot {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            animation: pulse-ring 2s infinite;
-        }
-
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
-        }
-
-        /* Chat System */
-        .chat-system {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            z-index: 9999;
-        }
-
-        .chat-toggle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .chat-toggle:hover {
-            transform: scale(1.1) rotate(10deg);
-        }
-
-        .chat-window {
-            position: absolute;
-            bottom: 80px;
-            left: 0;
-            width: 380px;
-            height: 500px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
-            display: flex;
-            flex-direction: column;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px) scale(0.9);
-            transition: var(--transition);
-        }
-
-        .chat-window.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-
-        .chat-header {
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-        }
-
-        .chat-footer {
-            padding: 1rem;
-            border-top: 1px solid var(--border);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 4rem 2rem 2rem;
-        }
-
-        .footer-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr repeat(3, 1fr);
-            gap: 4rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-brand p {
-            color: var(--text-secondary);
-            margin: 1rem 0;
-            line-height: 1.8;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--bg-tertiary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .social-link:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-        }
-
-        .footer-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-link {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-link a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .footer-link a:hover {
-            color: var(--primary);
-            padding-right: 0.5rem;
-        }
-
-        .footer-bottom {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .hero-container { grid-template-columns: 1fr; }
-            .hero-visual { display: none; }
-            .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-            .charts-grid { grid-template-columns: 1fr; }
-            .vr-container { grid-template-columns: 1fr; }
-        }
-
+        /* Prevent form shrinking on mobile */
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .mobile-menu-btn { display: flex; }
-            .hero-title { font-size: 2.5rem; }
-            .search-grid { grid-template-columns: 1fr; }
-            .properties-grid { grid-template-columns: 1fr; }
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr; }
-            .ai-interface { grid-template-columns: 1fr; }
-            .chat-window { width: calc(100vw - 2rem); right: 1rem; left: 1rem; }
-        }
-
-        /* Animations */
-        .fade-in { animation: fadeIn 0.6s ease; }
-        .slide-up { animation: slideUp 0.6s ease; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 100px;
-            left: 2rem;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .toast {
-            padding: 1rem 1.5rem;
-            background: var(--bg-secondary);
-            border-right: 4px solid var(--primary);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            animation: slideInRight 0.3s ease;
-            min-width: 300px;
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(-100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Loading States */
-        .skeleton {
-            background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-secondary) 50%, var(--bg-tertiary) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: var(--radius);
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-        }
-
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 0.5rem 1rem;
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            border-radius: var(--radius);
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            margin-bottom: 0.5rem;
-        }
-
-        .tooltip:hover::after {
-            opacity: 1;
-            visibility: visible;
+            .mobile-fix { padding: 1.5rem !important; }
         }
     </style>
 </head>
-<body>
-    <!-- Loading Screen -->
-    <div id="loader">
-        <div class="loader-content">
-            <div class="loader-logo">سُكان</div>
-            <p style="color: var(--text-secondary); margin-top: 1rem;">جاري تحميل المنصة...</p>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
-            </div>
-        </div>
+
+<body class="bg-sukan-bg text-sukan-dark font-sans leading-relaxed selection:bg-sukan-brand selection:text-white">
+
+    <div class="bg-sukan-dark text-white py-2 text-center text-sm font-medium">
+        ✨ انضم لأكثر من <span class="text-sukan-accent">2,500</span> شخص سجلوا اهتمامهم في الرياض وجدة
     </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <div class="nav-logo-icon">🏠</div>
-                <span class="nav-logo-text">سُكان برو</span>
-            </a>
-            
-            <ul class="nav-links">
-                <li><a href="#home" class="nav-link">الرئيسية</a></li>
-                <li><a href="#properties" class="nav-link">العقارات</a></li>
-                <li><a href="#ai" class="nav-link">المساعد الذكي</a></li>
-                <li><a href="#analytics" class="nav-link">التحليلات</a></li>
-                <li><a href="#vr" class="nav-link">جولة افتراضية</a></li>
-            </ul>
-
-            <div class="nav-actions">
-                <div class="lang-switcher">
-                    <button class="lang-btn">
-                        🇸🇦 العربية
-                    </button>
-                    <div class="lang-dropdown">
-                        <div class="lang-option active">
-                            🇸🇦 العربية
-                        </div>
-                        <div class="lang-option">
-                            🇬🇧 English
-                        </div>
-                        <div class="lang-option">
-                            🇫🇷 Français
-                        </div>
-                    </div>
+    <nav class="sticky top-0 z-[999] glass w-full border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex justify-between items-center">
+            <div class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-12 h-12 bg-sukan-brand rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-xl shadow-sukan-brand/30 group-hover:rotate-12 transition-transform">
+                    س
                 </div>
-
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    🌙
-                </button>
-
-                <button class="btn btn-secondary">تسجيل الدخول</button>
-                <button class="btn btn-primary">حساب جديد</button>
-
-                <button class="mobile-menu-btn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+                <div class="flex flex-col leading-none">
+                    <span class="text-2xl font-black tracking-tight">سُكان</span>
+                    <span class="text-[10px] text-sukan-brand font-bold tracking-widest uppercase">SUKAN PLATFORM</span>
+                </div>
             </div>
+            
+            <div class="hidden lg:flex items-center gap-10 font-bold text-slate-600">
+                <a href="#how-it-works" class="hover:text-sukan-brand transition-colors">كيف نعمل؟</a>
+                <a href="#features" class="hover:text-sukan-brand transition-colors">المميزات</a>
+                <a href="#faq" class="hover:text-sukan-brand transition-colors">الأسئلة الشائعة</a>
+                <a href="#register" class="bg-sukan-brand text-white px-8 py-3.5 rounded-2xl hover:bg-sukan-secondary hover:shadow-2xl transition duration-300 transform hover:-translate-y-1">
+                    ابدأ الآن مجاناً
+                </a>
+            </div>
+
+            <button class="lg:hidden p-2">
+                <svg class="w-8 h-8 text-sukan-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-bg">
-            <div class="hero-bg-grid"></div>
-            <div class="hero-particles" id="particles"></div>
-        </div>
+    <main class="relative grid-bg overflow-hidden pt-12 pb-24 lg:pt-24 lg:pb-32">
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
 
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span>🚀</span>
-                    <span>المنصة العقارية الأولى بالذكاء الاصطناعي</span>
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+            <div data-aos="fade-left" data-aos-duration="1000">
+                <div class="inline-flex items-center gap-2 bg-blue-100/50 text-sukan-brand px-6 py-2 rounded-full text-sm font-bold mb-10 border border-blue-200">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sukan-brand opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-sukan-brand"></span>
+                    </span>
+                    أول منصة لتنسيق السكن المشترك في المملكة
                 </div>
-                
-                <h1 class="hero-title">
-                    اعثر على <span class="gradient-text">عقارك المثالي</span><br>
-                    بمساعدة الذكاء الاصطناعي
+                <h1 class="text-6xl lg:text-8xl font-black leading-tight mb-8">
+                    أسلوب <br><span class="hero-title tracking-tighter">سكن ذكي</span> <br> للمستقبل
                 </h1>
-                
-                <p class="hero-description">
-                    منصة سُكان برو توفر لك تجربة بحث ذكية مع خرائط تفاعلية، 
-                    جولات افتراضية 360°، وتحليلات سوقية دقيقة في الوقت الفعلي.
+                <p class="text-2xl text-slate-500 mb-12 leading-relaxed max-w-xl">
+                    منصة <span class="font-bold text-sukan-dark">سُكان</span> تمنحك القدرة على السكن في أرقى أحياء الرياض وجدة بتكلفة أقل بنسبة <span class="text-sukan-brand font-black italic">50%</span>.
                 </p>
-
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-value" data-count="15000">0</span>
-                        <span class="stat-label">عقار متاح</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value" data-count="8500">0</span>
-                        <span class="stat-label">عميل سعيد</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value" data-count="98">0</span>
-                        <span class="stat-label">% نسبة الرضا</span>
-                    </div>
-                </div>
-
-                <div class="hero-actions">
-                    <button class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
-                        ابدأ البحث الذكي 🔍
-                    </button>
-                    <button class="btn btn-secondary" style="padding: 1rem 2rem;">
-                        شاهد العرض التوضيحي ▶️
-                    </button>
-                </div>
-            </div>
-
-            <div class="hero-visual">
-                <div class="floating-cards">
-                    <div class="float-card">
-                        <div class="float-card-image">🏡</div>
-                        <div class="float-card-title">فيلا فاخرة</div>
-                        <div class="float-card-price">2,500,000 ر.س</div>
-                    </div>
-                    <div class="float-card">
-                        <div class="float-card-image">🏢</div>
-                        <div class="float-card-title">شقة دوبلكس</div>
-                        <div class="float-card-price">850,000 ر.س</div>
-                    </div>
-                    <div class="float-card">
-                        <div class="float-card-image">🏬</div>
-                        <div class="float-card-title">محل تجاري</div>
-                        <div class="float-card-price">1,200,000 ر.س</div>
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <a href="#register" class="px-12 py-6 bg-sukan-dark text-white rounded-3xl font-black text-xl hover:bg-gray-800 transition shadow-2xl flex items-center justify-center gap-3 group">
+                        سجل اهتمامك 
+                        <svg class="w-6 h-6 group-hover:translate-x-[-5px] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </a>
+                    <div class="flex items-center gap-5 p-2">
+                        <div class="flex -space-x-4">
+                            <img class="h-14 w-14 rounded-full border-4 border-white" src="https://i.pravatar.cc/150?u=a" alt="User">
+                            <img class="h-14 w-14 rounded-full border-4 border-white" src="https://i.pravatar.cc/150?u=b" alt="User">
+                            <img class="h-14 w-14 rounded-full border-4 border-white" src="https://i.pravatar.cc/150?u=c" alt="User">
+                        </div>
+                        <div class="leading-tight">
+                            <p class="font-black text-sukan-dark">انضم لـ 2.5k+</p>
+                            <p class="text-sm text-slate-500 font-medium">ممن ينتظرون الإطلاق</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Search Section -->
-    <section class="search-section">
-        <div class="search-container">
-            <div class="search-tabs">
-                <button class="search-tab active">شراء</button>
-                <button class="search-tab">إيجار</button>
-                <button class="search-tab">تمويل عقاري</button>
-                <button class="search-tab">عقارات تجارية</button>
-            </div>
-
-            <div class="search-grid">
-                <div class="search-field">
-                    <label class="search-label">المدينة أو الحي</label>
-                    <input type="text" class="search-input" placeholder="مثال: الرياض، حي الياسمين">
-                    <span class="search-icon">📍</span>
-                </div>
-                <div class="search-field">
-                    <label class="search-label">نوع العقار</label>
-                    <input type="text" class="search-input" placeholder="فيلا، شقة، أرض...">
-                    <span class="search-icon">🏠</span>
-                </div>
-                <div class="search-field">
-                    <label class="search-label">السعر من</label>
-                    <input type="text" class="search-input" placeholder="0 ر.س">
-                    <span class="search-icon">💰</span>
-                </div>
-                <div class="search-field">
-                    <label class="search-label">السعر إلى</label>
-                    <input type="text" class="search-input" placeholder="5,000,000 ر.س">
-                    <span class="search-icon">💰</span>
-                </div>
-                <button class="btn btn-primary search-btn">
-                    بحث 🔍
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- AI Section -->
-    <section class="ai-section" id="ai">
-        <div class="section-container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <span>🤖</span>
-                    <span>مدعوم بالذكاء الاصطناعي</span>
-                </div>
-                <h2 class="section-title">مساعدك الذكي الشخصي</h2>
-                <p class="section-description">
-                    تحدث مع سُكان AI ليحدد لك أفضل الخيارات بناءً على احتياجاتك وميزانيتك ونمط حياتك
-                </p>
-            </div>
-
-            <div class="ai-interface">
-                <div class="ai-sidebar">
-                    <div class="ai-avatar">🤖</div>
-                    <div class="ai-name">سُكان AI</div>
-                    <div class="ai-status">متصل الآن</div>
+            <div class="relative" data-aos="zoom-in" data-aos-duration="1200">
+                <div class="absolute -inset-10 bg-gradient-to-r from-sukan-brand/20 to-sukan-accent/20 rounded-full blur-[100px] animate-pulse"></div>
+                <div class="relative z-10 animate-float-slow">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200" alt="Sukan Real Estate" class="rounded-[4rem] shadow-2xl border-[12px] border-white object-cover h-[600px] w-full shadow-blue-200/50">
                     
-                    <div class="ai-options">
-                        <div class="ai-option">
-                            <span>🏠</span>
-                            <span>ابحث لي عن فيلا</span>
-                        </div>
-                        <div class="ai-option">
-                            <span>💰</span>
-                            <span>ما ميزانيتي المناسبة؟</span>
-                        </div>
-                        <div class="ai-option">
-                            <span>📊</span>
-                            <span>تحليل السوق الحالي</span>
-                        </div>
-                        <div class="ai-option">
-                            <span>📍</span>
-                            <span>أفضل الأحياء للاستثمار</span>
-                        </div>
-                        <div class="ai-option">
-                            <span>🏦</span>
-                            <span>حاسبة التمويل العقاري</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ai-chat">
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="chat-message">
-                            <div class="chat-avatar ai">🤖</div>
-                            <div class="chat-content">
-                                مرحباً! أنا سُكان AI، مساعدك العقاري الذكي. 
-                                كيف يمكنني مساعدتك في العثور على عقارك المثالي اليوم؟
+                    <div class="absolute top-10 -right-8 glass p-6 rounded-3xl shadow-2xl border border-white/50 animate-bounce transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center text-white text-xl">🛡️</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-400">حسابات موثقة عبر</p>
+                                <p class="text-lg font-black text-sukan-dark leading-none">بوابة نفاذ</p>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="chat-input-container">
-                        <input type="text" class="chat-input" placeholder="اكتب رسالتك هنا..." id="chatInput">
-                        <button class="btn btn-primary" onclick="sendMessage()">إرسال</button>
+                    <div class="absolute bottom-20 -left-8 glass p-6 rounded-3xl shadow-2xl border border-white/50 animate-float-slow">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-sukan-brand rounded-2xl flex items-center justify-center text-white text-xl text-right">💰</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-400 text-right">وفرت حتى الآن</p>
+                                <p class="text-lg font-black text-sukan-dark leading-none text-right">50% من التكلفة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-12">
+            <div class="text-center" data-aos="fade-up">
+                <p class="text-5xl font-black text-sukan-brand mb-2">0</p>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">تكلفة التسجيل</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+                <p class="text-5xl font-black text-sukan-brand mb-2">100%</p>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">أمان مع نفاذ</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+                <p class="text-5xl font-black text-sukan-brand mb-2">50%</p>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">توفير سنوي</p>
+            </div>
+            <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+                <p class="text-5xl font-black text-sukan-brand mb-2">24/7</p>
+                <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">دعم فني وتواصل</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-32 bg-slate-50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-24">
+                <h2 class="text-5xl font-black mb-6">ماذا تقدم لك <span class="text-sukan-brand">سُكان</span>؟</h2>
+                <div class="h-2 w-24 bg-sukan-brand mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="group bg-white p-12 rounded-[3.5rem] shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 hover:-translate-y-4" data-aos="fade-up">
+                    <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center text-4xl mb-10 group-hover:bg-sukan-brand group-hover:text-white transition-colors duration-500">
+                        🔒
+                    </div>
+                    <h3 class="text-2xl font-black mb-6">تواصل آمن ومحمي</h3>
+                    <p class="text-slate-500 text-lg leading-relaxed">
+                        تواصل عن طريق التطبيق بشكل مباشر وآمن. نحن نضمن أن بياناتك الشخصية لا تظهر إلا للأشخاص الموثقين الذين تختارهم بنفسك.
+                    </p>
+                </div>
+
+                <div class="group bg-sukan-dark p-12 rounded-[3.5rem] shadow-2xl transition-all duration-500 hover:-translate-y-4 relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="absolute -right-10 -bottom-10 text-9xl text-white/5 opacity-10">💰</div>
+                    <div class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center text-4xl mb-10 text-white">
+                        💰
+                    </div>
+                    <h3 class="text-2xl font-black mb-6 text-white">وفر حتى 50%</h3>
+                    <p class="text-slate-300 text-lg leading-relaxed">
+                        لماذا تدفع ميزانيتك بالكامل على السكن؟ منصة سُكان تتيح لك مشاركة الإيجار مع شركاء مثاليين مما يقلل المصاريف للنصف.
+                    </p>
+                </div>
+
+                <div class="group bg-white p-12 rounded-[3.5rem] shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 hover:-translate-y-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center text-4xl mb-10 group-hover:bg-sukan-brand group-hover:text-white transition-colors duration-500">
+                        🏠
+                    </div>
+                    <h3 class="text-2xl font-black mb-6">اسكن في أي مكان</h3>
+                    <p class="text-slate-500 text-lg leading-relaxed">
+                        لا تضحي بالموقع لأجل السعر. اسكن في أرقى الأحياء، قريباً من عملك، وفي بيئة تناسب طموحاتك وبسعر يتناسب تماماً مع دخلك.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-24 items-center">
+                <div class="space-y-10" data-aos="fade-left">
+                    <h2 class="text-5xl font-black leading-tight">كيف تعمل <span class="text-sukan-brand italic underline decoration-blue-200">سُكان</span>؟</h2>
+                    
+                    <div class="flex gap-8">
+                        <div class="flex-shrink-0 w-16 h-16 bg-sukan-brand text-white rounded-full flex items-center justify-center text-2xl font-black shadow-xl shadow-blue-200">1</div>
+                        <div>
+                            <h4 class="text-2xl font-black mb-2">سجل بياناتك وثق حسابك</h4>
+                            <p class="text-slate-500 text-lg">نبدأ بالتحقق من هويتك عبر بوابة نفاذ الوطنية لضمان أمان المجتمع السكني.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-8">
+                        <div class="flex-shrink-0 w-16 h-16 bg-slate-100 text-slate-800 rounded-full flex items-center justify-center text-2xl font-black">2</div>
+                        <div>
+                            <h4 class="text-2xl font-black mb-2">ابحث عن السكن أو الشريك</h4>
+                            <p class="text-slate-500 text-lg">استخدم خوارزمياتنا الذكية للوصول لأفضل سكن متاح أو أشخاص يشبهونك في الاهتمامات والميزانية.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-8">
+                        <div class="flex-shrink-0 w-16 h-16 bg-slate-100 text-slate-800 rounded-full flex items-center justify-center text-2xl font-black">3</div>
+                        <div>
+                            <h4 class="text-2xl font-black mb-2">تواصل واتفق بضماننا</h4>
+                            <p class="text-slate-500 text-lg">تواصل عبر شات المنصة، وقع العقود التشاركية، وابدأ رحلة سكنك الجديد بكل راحة بال.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-sukan-dark p-16 rounded-[4rem] text-white relative overflow-hidden" data-aos="zoom-in-right">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-sukan-brand/20 blur-[120px]"></div>
+                    <div class="relative z-10">
+                        <p class="text-3xl font-medium leading-relaxed italic mb-12">
+                            "سُكان هي أول منصة تعمل على تنسيق السكن المشترك، وتحسين جودة التواصل والتقليل من التلاعب، جميع العمليات موثقة عبر **نفاذ** لضمان حقوقك."
+                        </p>
+                        <div class="flex items-center gap-6">
+                            <div class="w-20 h-2 bg-sukan-brand rounded-full"></div>
+                            <div>
+                                <p class="text-xl font-black">إدارة المنصة</p>
+                                <p class="text-sukan-accent font-bold">رؤية 2030</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Properties Section -->
-    <section class="properties-section" id="properties">
-        <div class="section-container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <span>✨</span>
-                    <span>عقارات مميزة</span>
-                </div>
-                <h2 class="section-title">أحدث العقارات المتاحة</h2>
-                <p class="section-description">
-                    مجموعة مختارة من أفضل العقارات مع تقييم ذكي للسعر وجودة الموقع
-                </p>
-            </div>
-
-            <div class="filters-bar">
-                <div class="filters-group">
-                    <button class="filter-btn active">الكل</button>
-                    <button class="filter-btn">فلل</button>
-                    <button class="filter-btn">شقق</button>
-                    <button class="filter-btn">أراضي</button>
-                    <button class="filter-btn">تجاري</button>
-                    <button class="filter-btn">📍 قرب مني</button>
-                </div>
+    <section id="register" class="py-32 bg-slate-50 grid-bg">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="bg-white rounded-[4rem] shadow-2xl overflow-hidden border border-white flex flex-col md:flex-row" data-aos="flip-down">
                 
-                <div class="view-toggle">
-                    <button class="view-btn active">⊞</button>
-                    <button class="view-btn">☰</button>
-                    <button class="view-btn">🗺️</button>
+                <div class="md:w-1/3 bg-sukan-dark p-12 md:p-16 text-white flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-3xl font-black mb-6 leading-tight">كن أول <br> من ينطلق!</h3>
+                        <p class="text-slate-400 font-medium">نحن نفتح التسجيل لمناطق محدودة في الرياض وجدة كمرحلة أولى.</p>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3 text-sukan-accent font-bold italic">
+                            <span>✨</span> تجربة خالية من العمولات
+                        </div>
+                        <div class="flex items-center gap-3 text-sukan-accent font-bold italic">
+                            <span>✨</span> وصول حصري للعقارات
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="properties-grid" id="propertiesGrid">
-                <!-- Properties will be loaded dynamically -->
+                <div class="md:w-2/3 p-12 md:p-20 mobile-fix">
+                    <div class="mb-12">
+                        <h2 class="text-4xl font-black mb-4">سجل اهتمامك</h2>
+                        <p class="text-slate-400 font-bold tracking-wide">ادخل بياناتك للانضمام لقائمة الانتظار الذهبية</p>
+                    </div>
+
+                    <form id="sukanForm" class="space-y-8">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">الاسم الأول</label>
+                                <input type="text" id="first_name" required placeholder="مثلاً: محمد" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">الاسم الأخير</label>
+                                <input type="text" id="last_name" required placeholder="مثلاً: العتيبي" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg">
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">رقم الجوال</label>
+                                <input type="tel" id="phone" required placeholder="05xxxxxxxx" dir="ltr" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg text-right">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">البريد الإلكتروني</label>
+                                <input type="email" id="email" required placeholder="name@domain.com" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg">
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="text-sm font-black text-slate-700 mr-2">المدينة المفضلة</label>
+                            <select id="city" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%22%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C/svg%3E')] bg-[length:1.5em_1.5em] bg-[right_1.5rem_center] bg-no-repeat">
+                                <option value="الرياض">الرياض</option>
+                                <option value="جدة">جدة</option>
+                                <option value="المنطقة الشرقية">المنطقة الشرقية</option>
+                            </select>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">الميزانية (SAR)</label>
+                                <input type="number" id="budget" required placeholder="مثلاً: 3000" class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-black text-slate-700 mr-2">وقت الانتقال</label>
+                                <input type="date" id="move_date" required class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-slate-100 outline-none focus:border-sukan-brand focus:bg-white transition-all text-lg text-slate-400">
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="w-full bg-sukan-brand text-white py-6 rounded-[2rem] font-black text-2xl hover:bg-sukan-secondary shadow-2xl shadow-blue-200 transition-all active:scale-95">
+                            تأكيد الانضمام للقائمة
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Map Section -->
-    <section class="map-section">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">استكشف على الخريطة</h2>
-                <p class="section-description">
-                    تصفح العقارات بشكل تفاعلي مع معلومات عن الخدمات المحيطة والبنية التحتية
-                </p>
+    <section id="faq" class="py-32 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-5xl font-black text-center mb-20">أسئلة شائعة</h2>
+            <div class="space-y-6">
+                <details class="group bg-slate-50 p-8 rounded-[2rem] cursor-pointer open:bg-blue-50 transition-all duration-300">
+                    <summary class="text-xl font-black flex justify-between items-center list-none">
+                        هل المنصة تابعة لوزارة الإسكان؟
+                        <span class="text-sukan-brand group-open:rotate-180 transition-transform font-bold">+</span>
+                    </summary>
+                    <p class="mt-6 text-slate-600 leading-relaxed text-lg">نحن منصة خاصة نعمل بالتكامل مع بوابة نفاذ الوطنية لضمان أمان المستخدمين، ونهدف لتسهيل الوصول لحلول سكنية مرنة تتوافق مع التوجهات الوطنية لرؤية المملكة 2030.</p>
+                </details>
+                
+                <details class="group bg-slate-50 p-8 rounded-[2rem] cursor-pointer open:bg-blue-50 transition-all duration-300">
+                    <summary class="text-xl font-black flex justify-between items-center list-none">
+                        كيف تضمنون جودة شركاء السكن؟
+                        <span class="text-sukan-brand group-open:rotate-180 transition-transform font-bold">+</span>
+                    </summary>
+                    <p class="mt-6 text-slate-600 leading-relaxed text-lg">كل مستخدم في سُكان ملزم بالتوثيق عبر نفاذ، بالإضافة إلى نظام تقييم متبادل وتوصيف دقيق للاهتمامات ونمط الحياة لضمان التوافق التام قبل السكن.</p>
+                </details>
+
+                <details class="group bg-slate-50 p-8 rounded-[2rem] cursor-pointer open:bg-blue-50 transition-all duration-300">
+                    <summary class="text-xl font-black flex justify-between items-center list-none">
+                        هل يمكنني إلغاء اشتراكي لاحقاً؟
+                        <span class="text-sukan-brand group-open:rotate-180 transition-transform font-bold">+</span>
+                    </summary>
+                    <p class="mt-6 text-slate-600 leading-relaxed text-lg">بكل تأكيد، منصة سُكان توفر مرونة كاملة في إدارة حسابك واختياراتك السكنية دون أي التزامات مخفية.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-sukan-dark text-white pt-32 pb-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-4 gap-20 mb-24">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-10 font-black text-4xl">
+                        <div class="w-14 h-14 bg-sukan-brand rounded-2xl flex items-center justify-center text-white">س</div>
+                        سُكان
+                    </div>
+                    <p class="text-slate-400 text-xl leading-relaxed max-w-md">
+                        نحن نعيد تعريف السكن في المملكة. تكنولوجيا تخدم الإنسان، وتوفر له حياة كريمة بتكلفة ذكية.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="font-black text-xl mb-8 border-r-4 border-sukan-brand pr-4">روابط سريعة</h5>
+                    <ul class="space-y-4 text-slate-400 font-medium text-lg">
+                        <li><a href="#how-it-works" class="hover:text-white transition">كيف نعمل؟</a></li>
+                        <li><a href="#features" class="hover:text-white transition">المميزات</a></li>
+                        <li><a href="#register" class="hover:text-white transition">سجل اهتمامك</a></li>
+                        <li><a href="#faq" class="hover:text-white transition">الأسئلة الشائعة</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-black text-xl mb-8 border-r-4 border-sukan-brand pr-4">تواصل معنا</h5>
+                    <p class="text-slate-400 font-medium text-lg mb-4">الرياض، المملكة العربية السعودية</p>
+                    <p class="text-sukan-brand font-black text-xl italic">info@sukan.sa</p>
+                </div>
             </div>
             
-            <div class="map-container">
-                <div id="map"></div>
-                <div class="map-overlay">
-                    <div class="map-stats">
-                        <div>
-                            <div style="font-size: 1.5rem; font-weight: 800;">156</div>
-                            <div style="font-size: 0.875rem; color: var(--text-muted);">عقار في المنطقة</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.5rem; font-weight: 800;">4.8</div>
-                            <div style="font-size: 0.875rem; color: var(--text-muted);">متوسط التقييم</div>
-                        </div>
-                    </div>
+            <div class="pt-16 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-8">
+                <p class="text-slate-500 font-bold">© 2026 منصة سُكان. صُنع بكل حب في المملكة 🇸🇦</p>
+                <div class="flex gap-8 text-slate-500 font-bold">
+                    <a href="#" class="hover:text-white">سياسة الخصوصية</a>
+                    <a href="#" class="hover:text-white">شروط الاستخدام</a>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Analytics Section -->
-    <section class="analytics-section" id="analytics">
-        <div class="section-container">
-            <div class="section-header">
-                <div class="section-badge">
-                    <span>📊</span>
-                    <span>تحليلات السوق</span>
-                </div>
-                <h2 class="section-title">لوحة التحكم الذكية</h2>
-                <p class="section-description">
-                    رؤى عميقة وتحليلات تنبؤية لسوق العقارات في الوقت الفعلي
-                </p>
-            </div>
-
-            <div class="dashboard-grid">
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon blue">🏠</div>
-                        <span class="stat-change positive">+12.5%</span>
-                    </div>
-                    <div class="stat-value-large" data-count="2450">0</div>
-                    <div class="stat-label-large">عقار مباع هذا الشهر</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon pink">💰</div>
-                        <span class="stat-change positive">+8.3%</span>
-                    </div>
-                    <div class="stat-value-large" data-count="1250000">0</div>
-                    <div class="stat-label-large">متوسط السعر (ر.س)</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon orange">⏱️</div>
-                        <span class="stat-change negative">-15%</span>
-                    </div>
-                    <div class="stat-value-large" data-count="18">0</div>
-                    <div class="stat-label-large">متوسط أيام البيع</div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon green">📈</div>
-                        <span class="stat-change positive">+23%</span>
-                    </div>
-                    <div class="stat-value-large" data-count="89">0</div>
-                    <div class="stat-label-large">مؤشر الثقة</div>
-                </div>
-            </div>
-
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">اتجاهات أسعار العقارات</h3>
-                        <div class="chart-actions">
-                            <button class="chart-btn active">شهر</button>
-                            <button class="chart-btn">3 أشهر</button>
-                            <button class="chart-btn">سنة</button>
-                        </div>
-                    </div>
-                    <canvas id="priceChart"></canvas>
-                </div>
-                
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">توزيع العقارات</h3>
-                    </div>
-                    <canvas id="distributionChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- VR Section -->
-    <section class="vr-section" id="vr">
-        <div class="vr-container">
-            <div class="vr-content">
-                <div class="section-badge">
-                    <span>🥽</span>
-                    <span>جولة افتراضية</span>
-                </div>
-                <h2>اختبر العقار قبل الزيارة</h2>
-                <p style="color: var(--text-secondary); font-size: 1.125rem; margin-bottom: 2rem;">
-                    تقنية الواقع الافتراضي والمعزز تتيح لك التجول داخل العقار 
-                    وقياس المساحات والتعرف على التفاصيل بدقة عالية.
-                </p>
-                
-                <div class="vr-features">
-                    <div class="vr-feature">
-                        <div class="vr-feature-icon">🔄</div>
-                        <div>
-                            <h4 style="margin-bottom: 0.5rem;">جولة 360° كاملة</h4>
-                            <p style="color: var(--text-muted); font-size: 0.875rem;">
-                                تحرك بحرية في جميع الاتجاهات كأنك موجود فعلاً
-                            </p>
-                        </div>
-                    </div>
-                    <div class="vr-feature">
-                        <div class="vr-feature-icon">📏</div>
-                        <div>
-                            <h4 style="margin-bottom: 0.5rem;">قياس ذكي للمساحات</h4>
-                            <p style="color: var(--text-muted); font-size: 0.875rem;">
-                                احسب المساحات والأبعاد بدقة عالية باستخدام AR
-                            </p>
-                        </div>
-                    </div>
-                    <div class="vr-feature">
-                        <div class="vr-feature-icon">🎨</div>
-                        <div>
-                            <h4 style="margin-bottom: 0.5rem;">تجربة الديكور</h4>
-                            <p style="color: var(--text-muted); font-size: 0.875rem;">
-                                جرب ألوان وأثاث مختلف قبل الشراء
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn btn-primary" style="margin-top: 1rem;">
-                    جرب الجولة الافتراضية الآن 🥽
-                </button>
-            </div>
-
-            <div class="vr-preview">
-                <div class="vr-360">
-                    <div style="text-align: center;">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;">🏠</div>
-                        <p>انقر لبدء الجولة الافتراضية</p>
-                    </div>
-                    <div class="vr-hotspot" style="top: 30%; right: 30%;">📍</div>
-                    <div class="vr-hotspot" style="top: 60%; left: 20%;">📍</div>
-                    <div class="vr-hotspot" style="bottom: 30%; right: 40%;">📍</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Chat System -->
-    <div class="chat-system">
-        <button class="chat-toggle" onclick="toggleChat()">
-            💬
-        </button>
-        <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <div style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary);">🤖</div>
-                    <div>
-                        <div style="font-weight: 700;">سُكان AI</div>
-                        <div style="font-size: 0.75rem; opacity: 0.9;">متصل الآن</div>
-                    </div>
-                </div>
-                <button onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">×</button>
-            </div>
-            <div class="chat-body" id="chatBody">
-                <div class="chat-message">
-                    <div class="chat-avatar ai">🤖</div>
-                    <div class="chat-content">
-                        مرحباً! كيف يمكنني مساعدتك اليوم؟
-                    </div>
-                </div>
-            </div>
-            <div class="chat-footer">
-                <div style="display: flex; gap: 0.5rem;">
-                    <input type="text" class="chat-input" placeholder="اكتب رسالتك..." id="quickChatInput" style="flex: 1;">
-                    <button class="btn btn-primary" onclick="sendQuickMessage()">➤</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-brand">
-                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">🏠</div>
-                    <span style="font-size: 1.5rem; font-weight: 800;">سُكان برو</span>
-                </div>
-                <p>
-                    المنصة العقارية الذكية الأولى في المملكة العربية السعودية، 
-                    نقدم تجربة بحث متقدمة مع تقنيات الذكاء الاصطناعي والواقع الافتراضي.
-                </p>
-                <div class="social-links">
-                    <a href="#" class="social-link">📘</a>
-                    <a href="#" class="social-link">🐦</a>
-                    <a href="#" class="social-link">📸</a>
-                    <a href="#" class="social-link">💼</a>
-                    <a href="#" class="social-link">📺</a>
-                </div>
-            </div>
-
-            <div>
-                <h4 class="footer-title">اكتشف</h4>
-                <ul class="footer-links">
-                    <li class="footer-link"><a href="#">العقارات للبيع</a></li>
-                    <li class="footer-link"><a href="#">العقارات للإيجار</a></li>
-                    <li class="footer-link"><a href="#">التمويل العقاري</a></li>
-                    <li class="footer-link"><a href="#">دليل الأحياء</a></li>
-                    <li class="footer-link"><a href="#">الاستثمار العقاري</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="footer-title">الشركة</h4>
-                <ul class="footer-links">
-                    <li class="footer-link"><a href="#">عن سُكان</a></li>
-                    <li class="footer-link"><a href="#">فريق العمل</a></li>
-                    <li class="footer-link"><a href="#">الوظائف</a></li>
-                    <li class="footer-link"><a href="#">المدونة</a></li>
-                    <li class="footer-link"><a href="#">اتصل بنا</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="footer-title">الدعم</h4>
-                <ul class="footer-links">
-                    <li class="footer-link"><a href="#">مركز المساعدة</a></li>
-                    <li class="footer-link"><a href="#">الشروط والأحكام</a></li>
-                    <li class="footer-link"><a href="#">سياسة الخصوصية</a></li>
-                    <li class="footer-link"><a href="#">الأسئلة الشائعة</a></li>
-                    <li class="footer-link"><a href="#">الدعم الفني</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p style="color: var(--text-muted);">© 2024 سُكان برو. جميع الحقوق محفوظة.</p>
-            <div style="display: flex; gap: 2rem; color: var(--text-muted); font-size: 0.875rem;">
-                <span>الرياض، المملكة العربية السعودية</span>
-                <span>الدعم: 9200XXXX</span>
-                <span>info@sukan.pro</span>
             </div>
         </div>
     </footer>
 
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Loading Screen
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                document.getElementById('loader').style.visibility = 'hidden';
-                initAnimations();
-            }, 1500);
+        // Initialization
+        AOS.init({ once: true, mirror: false });
+
+        // Supabase Logic
+        const SUPABASE_URL = 'https://xkvqrwdxxqkpaqodcbnv.supabase.co'; 
+        const SUPABASE_KEY = 'ضـع_مـفـتـاح_ANON_PUBLIC_هـنـا'; 
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const form = document.getElementById('sukanForm');
+        const btn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            btn.innerText = "جاري الحفظ في القاعدة...";
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const payload = {
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                city: document.getElementById('city').value,
+                budget: parseInt(document.getElementById('budget').value),
+                move_date: document.getElementById('move_date').value,
+                created_at: new Date()
+            };
+
+            try {
+                const { error } = await supabaseClient.from('leads').insert([payload]);
+                
+                if (error) throw error;
+
+                alert("رائع! تم تسجيل اهتمامك بنجاح في منصة سُكان. سنتواصل معك فور الإطلاق.");
+                form.reset();
+                btn.innerText = "تم التسجيل بنجاح ✅";
+                btn.classList.remove('bg-sukan-brand');
+                btn.classList.add('bg-green-600');
+            } catch (err) {
+                alert("حدث خطأ تقني: " + err.message);
+                btn.innerText = "حاول مرة أخرى";
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
         });
-
-        // Theme Toggle
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Update icon
-            const btn = document.querySelector('.theme-toggle');
-            btn.textContent = newTheme === 'dark' ? '🌙' : '☀️';
-            
-            showToast(`تم التبديل للوضع ${newTheme === 'dark' ? 'الداكن' : 'الفاتح'}`);
-        }
-
-        // Initialize theme
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        document.querySelector('.theme-toggle').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
-
-        // Toast Notifications
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `
-                <span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
-                <span>${message}</span>
-            `;
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-
-        // Chat Functions
-        function toggleChat() {
-            const chatWindow = document.getElementById('chatWindow');
-            chatWindow.classList.toggle('active');
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            if (message) {
-                addMessage(message, 'user');
-                input.value = '';
-                
-                // Simulate AI response
-                setTimeout(() => {
-                    const responses = [
-                        'أفهم ما تبحث عنه. دعني أقترح عليك بعض الخيارات المناسبة...',
-                        'بناءً على ميزانيتك، أنصحك بالنظر في حي الياسمين أو حي النرجس',
-                        'هل تفضل العقارات الجديدة أم المستعملة؟',
-                        'يمكنني مساعدتك في حساب القسط الشهري للتمويل العقاري'
-                    ];
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    addMessage(randomResponse, 'ai');
-                }, 1000);
-            }
-        }
-
-        function sendQuickMessage() {
-            const input = document.getElementById('quickChatInput');
-            const message = input.value.trim();
-            if (message) {
-                const chatBody = document.getElementById('chatBody');
-                const userMsg = document.createElement('div');
-                userMsg.className = 'chat-message user';
-                userMsg.innerHTML = `
-                    <div class="chat-avatar">👤</div>
-                    <div class="chat-content">${message}</div>
-                `;
-                chatBody.appendChild(userMsg);
-                chatBody.scrollTop = chatBody.scrollHeight;
-                input.value = '';
-                
-                setTimeout(() => {
-                    const aiMsg = document.createElement('div');
-                    aiMsg.className = 'chat-message';
-                    aiMsg.innerHTML = `
-                        <div class="chat-avatar ai">🤖</div>
-                        <div class="chat-content">شكراً لتواصلك معنا! سيتم الرد عليك من قبل أحد مستشارينا قريباً.</div>
-                    `;
-                    chatBody.appendChild(aiMsg);
-                    chatBody.scrollTop = chatBody.scrollHeight;
-                }, 1000);
-            }
-        }
-
-        function addMessage(text, sender) {
-            const container = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-message ${sender}`;
-            messageDiv.innerHTML = `
-                <div class="chat-avatar ${sender}">${sender === 'ai' ? '🤖' : '👤'}</div>
-                <div class="chat-content">${text}</div>
-            `;
-            container.appendChild(messageDiv);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // Particle System
-        function createParticles() {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-                container.appendChild(particle);
-            }
-        }
-        createParticles();
-
-        // Counter Animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('[data-count]');
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-count'));
-                const duration = 2000;
-                const increment = target / (duration / 16);
-                let current = 0;
-                
-                const updateCounter = () => {
-                    current += increment;
-                    if (current < target) {
-                        counter.textContent = Math.floor(current).toLocaleString();
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        counter.textContent = target.toLocaleString();
-                    }
-                };
-                
-                const observer = new IntersectionObserver((entries) => {
-                    if (entries[0].isIntersecting) {
-                        updateCounter();
-                        observer.disconnect();
-                    }
-                });
-                observer.observe(counter);
-            });
-        }
-
-        // Initialize Map
-        function initMap() {
-            const map = L.map('map').setView([24.7136, 46.6753], 12);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-
-            // Add sample markers
-            const locations = [
-                { lat: 24.7136, lng: 46.6753, title: 'فيلا فاخرة', price: '2,500,000 ر.س' },
-                { lat: 24.7236, lng: 46.6853, title: 'شقة عصرية', price: '850,000 ر.س' },
-                { lat: 24.7036, lng: 46.6653, title: 'أرض استثمارية', price: '1,200,000 ر.س' }
-            ];
-
-            locations.forEach(loc => {
-                const marker = L.marker([loc.lat, loc.lng]).addTo(map);
-                marker.bindPopup(`
-                    <div style="text-align: center; font-family: Tajawal;">
-                        <h3 style="margin: 0 0 0.5rem;">${loc.title}</h3>
-                        <p style="color: #6366f1; font-weight: bold; margin: 0;">${loc.price}</p>
-                    </div>
-                `);
-            });
-        }
-
-        // Initialize Charts
-        function initCharts() {
-            // Price Trend Chart
-            const priceCtx = document.getElementById('priceChart').getContext('2d');
-            new Chart(priceCtx, {
-                type: 'line',
-                data: {
-                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
-                    datasets: [{
-                        label: 'متوسط السعر',
-                        data: [1200000, 1250000, 1230000, 1300000, 1280000, 1350000],
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            ticks: {
-                                callback: function(value) {
-                                    return value / 1000000 + 'M';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Distribution Chart
-            const distCtx = document.getElementById('distributionChart').getContext('2d');
-            new Chart(distCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['فلل', 'شقق', 'أراضي', 'تجاري'],
-                    datasets: [{
-                        data: [35, 40, 15, 10],
-                        backgroundColor: ['#6366f1', '#ec4899', '#f59e0b', '#10b981']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                font: { family: 'Tajawal' }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Load Properties
-        function loadProperties() {
-            const grid = document.getElementById('propertiesGrid');
-            const properties = [
-                { type: 'فيلا', title: 'فيلا فاخرة بحي الياسمين', location: 'الرياض، حي الياسمين', price: '2,500,000', beds: 5, baths: 6, area: 450, image: '🏡' },
-                { type: 'شقة', title: 'شقة دوبلكس عصرية', location: 'الرياض، حي النرجس', price: '850,000', beds: 3, baths: 3, area: 180, image: '🏢' },
-                { type: 'أرض', title: 'أرض استثمارية مميزة', location: 'الرياض، حي الملقا', price: '1,200,000', beds: 0, baths: 0, area: 600, image: '🏞️' },
-                { type: 'تجاري', title: 'محل تجاري في موقع استراتيجي', location: 'الرياض، طريق العروبة', price: '3,500,000', beds: 0, baths: 2, area: 200, image: '🏬' },
-                { type: 'فيلا', title: 'فيلا حديثة مع مسبح خاص', location: 'الرياض، حي الملقا', price: '4,200,000', beds: 6, baths: 7, area: 550, image: '🏰' },
-                { type: 'شقة', title: 'شقة فاخرة بإطلالة رائعة', location: 'الرياض، حي العليا', price: '1,500,000', beds: 4, baths: 3, area: 220, image: '🌆' }
-            ];
-
-            properties.forEach((prop, index) => {
-                const card = document.createElement('div');
-                card.className = 'property-card';
-                card.style.animationDelay = `${index * 0.1}s`;
-                card.innerHTML = `
-                    <div class="property-badge">${prop.type}</div>
-                    <div class="property-image">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 5rem; background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));">
-                            ${prop.image}
-                        </div>
-                        <div class="property-actions">
-                            <button class="action-btn tooltip" data-tooltip="حفظ">♥</button>
-                            <button class="action-btn tooltip" data-tooltip="مقارنة">⚖️</button>
-                            <button class="action-btn tooltip" data-tooltip="مشاركة">↗️</button>
-                        </div>
-                    </div>
-                    <div class="property-content">
-                        <div class="property-price">${prop.price} ر.س</div>
-                        <h3 class="property-title">${prop.title}</h3>
-                        <div class="property-location">
-                            <span>📍</span>
-                            <span>${prop.location}</span>
-                        </div>
-                        <div class="property-features">
-                            ${prop.beds ? `<div class="property-feature"><span>🛏️</span> ${prop.beds} غرف</div>` : ''}
-                            ${prop.baths ? `<div class="property-feature"><span>🚿</span> ${prop.baths} حمام</div>` : ''}
-                            <div class="property-feature"><span>📐</span> ${prop.area} م²</div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // GSAP Animations
-        function initAnimations() {
-            gsap.registerPlugin(ScrollTrigger);
-
-            // Hero animations
-            gsap.from('.hero-content > *', {
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                stagger: 0.2,
-                ease: 'power3.out'
-            });
-
-            // Section headers
-            gsap.utils.toArray('.section-header').forEach(header => {
-                gsap.from(header, {
-                    scrollTrigger: {
-                        trigger: header,
-                        start: 'top 80%',
-                        toggleActions: 'play none none reverse'
-                    },
-                    y: 30,
-                    opacity: 0,
-                    duration: 0.8
-                });
-            });
-
-            // Cards animation
-            gsap.utils.toArray('.property-card, .stat-card, .feature-card').forEach((card, i) => {
-                gsap.from(card, {
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 85%',
-                    },
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.6,
-                    delay: i * 0.1
-                });
-            });
-        }
-
-        // Initialize everything
-        document.addEventListener('DOMContentLoaded', () => {
-            initMap();
-            initCharts();
-            loadProperties();
-            animateCounters();
-
-            // Search tabs
-            document.querySelectorAll('.search-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-
-            // Filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    showToast('جاري تحديث النتائج...');
-                });
-            });
-
-            // Enter key for chat
-            document.getElementById('chatInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendMessage();
-            });
-            document.getElementById('quickChatInput').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') sendQuickMessage();
-            });
-
-            // Smooth scroll for nav links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
-            });
-        });
-
-        // Performance monitoring
-        if ('PerformanceObserver' in window) {
-            const perfObserver = new PerformanceObserver((list) => {
-                for (const entry of list.getEntries()) {
-                    console.log(`[Performance] ${entry.name}: ${entry.duration}ms`);
-                }
-            });
-            perfObserver.observe({ entryTypes: ['measure', 'navigation'] });
-        }
-
-        // Service Worker registration for PWA
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('data:text/javascript,').catch(() => {
-                console.log('Service Worker not registered');
-            });
-        }
     </script>
 </body>
 </html>
